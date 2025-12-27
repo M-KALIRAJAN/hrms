@@ -16,7 +16,8 @@ class LoginView extends StatefulWidget {
   State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMixin {
+class _LoginViewState extends State<LoginView>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _authController = AuthController();
   final _authService = AuthService();
@@ -37,13 +38,15 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
       duration: const Duration(milliseconds: 800),
     );
 
-    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-    );
+    _fadeAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 0.8,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
 
     // Start the animation
     _controller.forward();
@@ -55,32 +58,29 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
     super.dispose();
   }
 
-Future<void> _Login(BuildContext context) async {
-  if (!_formKey.currentState!.validate()) return;
+  // Future<void> _Login(BuildContext context) async {
+  //   if (!_formKey.currentState!.validate()) return;
 
-  setState(() => _isLoading = true);
+  //   setState(() => _isLoading = true);
 
- 
-  final authData = AuthModel(
-    email: _authController.email.text.trim(),
-    password: _authController.password.text.trim(),
-  );
+  //   final authData = AuthModel(
+  //     email: _authController.email.text.trim(),
+  //     password: _authController.password.text.trim(),
+  //   );
 
+  //   final success = await _authService.login(authData);
 
-  final success = await _authService.login(authData);
-       
-  setState(() => _isLoading = false);
-  if (!mounted) return;
-  if (success) {
-    await Preferences.setLoggedIn(true);
-    context.go(RouteName.home);
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Login failed")),
-    );
-  }
-}
-
+  //   setState(() => _isLoading = false);
+  //   if (!mounted) return;
+  //   if (success) {
+  //     await Preferences.setLoggedIn(true);
+  //     context.go(RouteName.home);
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Login failed")),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -116,11 +116,11 @@ Future<void> _Login(BuildContext context) async {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Image.asset(
-      'assets/images/sarasbig.png',
-      height: 100, // adjust size as needed
-      fit: BoxFit.contain,
-    ),
-    SizedBox(height: 10,),
+                        'assets/images/sarasbig.png',
+                        height: 100, // adjust size as needed
+                        fit: BoxFit.contain,
+                      ),
+                      SizedBox(height: 10),
                       const Text(
                         "Welcome",
                         style: TextStyle(
@@ -167,7 +167,25 @@ Future<void> _Login(BuildContext context) async {
                           textColor: Colors.white,
                           isLoading: _isLoading,
                           onPressed: () async {
-                            _Login(context);
+                            if (_formKey.currentState!.validate()) {
+                              final response = await _authController.login();
+                              if (response.success) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(response.message),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                                context.go(RouteName.home);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(response.message),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            }
                           },
                         ),
                       ),
