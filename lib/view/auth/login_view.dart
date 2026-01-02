@@ -58,29 +58,7 @@ class _LoginViewState extends State<LoginView>
     super.dispose();
   }
 
-  // Future<void> _Login(BuildContext context) async {
-  //   if (!_formKey.currentState!.validate()) return;
 
-  //   setState(() => _isLoading = true);
-
-  //   final authData = AuthModel(
-  //     email: _authController.email.text.trim(),
-  //     password: _authController.password.text.trim(),
-  //   );
-
-  //   final success = await _authService.login(authData);
-
-  //   setState(() => _isLoading = false);
-  //   if (!mounted) return;
-  //   if (success) {
-  //     await Preferences.setLoggedIn(true);
-  //     context.go(RouteName.home);
-  //   } else {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text("Login failed")),
-  //     );
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

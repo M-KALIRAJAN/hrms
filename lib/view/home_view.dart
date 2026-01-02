@@ -236,7 +236,6 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-
               // Card with gradient for user info
               Container(
                 decoration: BoxDecoration(
